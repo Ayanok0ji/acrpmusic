@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MP3 Hosting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>MP3 Hosting</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="music" accept=".mp3" required>
+    <button type="submit">Upload</button>
+  </form>
+  <h2>Uploaded Music:</h2>
+  <ul id="musicList"></ul>
+
+  <script>
+    fetch('/music')
+      .then(response => response.json())
+      .then(data => {
+        const musicList = document.getElementById('musicList');
+        data.forEach(music => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = music.path;
+          a.textContent = music.filename;
+          li.appendChild(a);
+          musicList.appendChild(li);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+</body>
+</html>
